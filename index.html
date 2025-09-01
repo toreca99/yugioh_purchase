@@ -1,0 +1,744 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<title>カード一覧</title>
+<style>
+:root {
+  /* ================================
+     カラー・フォント・間隔の変数
+     ================================ */
+  --color-primary: #f88379;       /* メインカラー（ボタンなど） */
+  --color-gray-light: #f9f9f9;    /* カード背景 */
+  --color-gray-border: #ccc;      /* カード境界線 */
+  --font-size-base: 16px; /* 基本文字サイズを小さめに */
+  --font-size-small: 11px;
+  --font-size-xsmall: 9px;
+  --card-border-radius: 4px;      /* カード角丸 */
+  --spacing-xs: 2px;
+  --spacing-sm: 4px;
+  --spacing-md: 8px;
+}
+
+/* ================================
+   ページ全体
+   ================================ */
+body {
+  font-family: sans-serif;
+  padding: 10px;
+  background: #fff;
+}
+h1 {
+  font-size: 36px;                 /* 大きめの文字サイズ */
+  font-weight: 900;                /* 太字で豪華さを強調 */
+  text-align: center;              /* 中央揃え */
+  background: linear-gradient(90deg, #f88379, #e53935, #ff6f61); /* 左から右へグラデーション */
+  -webkit-background-clip: text;   /* 背景を文字にクリップ */
+  -webkit-text-fill-color: transparent; /* グラデーションを文字に適用 */
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3); /* 文字に影をつける */
+  margin-bottom: 12px;             /* 下の余白 */
+  letter-spacing: 1px;  /* 少し文字間を広げる */
+}
+
+
+.notice-header {
+ text-align: center;
+  font-size: 18px;      /* ヘッダー下でも読みやすい大きさ */
+  line-height: 1.5;     /* 行間少し広めで視認性アップ */
+  color: #333;
+  margin: 8px 0 20px 0;
+}
+
+.notice-header p {
+  margin: 4px 0;
+}
+
+.notice-important {
+  font-weight: bold;
+  color: #e53935;
+}
+
+.notice-sellpoint {
+  font-weight: 600;
+  color: #f57c00;
+}
+
+.notice-quick {
+  color: #1976d2;
+}
+
+.notice-dm {
+  font-weight: bold;
+  color: #388e3c;
+}
+
+
+/* ================================
+   コントロール（検索・チェックボックス・ボタン）
+   ================================ */
+.controls { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 12px; 
+  margin-bottom: 10px; 
+}
+.search-wrapper { 
+  display: flex; 
+  width: 100%; 
+  margin-bottom: 8px; 
+}
+#searchInput { 
+  flex: 1; 
+  padding: 10px 14px;      /* ← 縦横の余白を小さめに */
+  font-size: 36px;       /* ← 正常な文字サイズに修正 */
+  border: 1px solid var(--color-gray-border); 
+  border-radius: 6px; 
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  height: 54px;          /* ← 縦の高さを少し抑える */
+}
+  #searchInput:focus {
+  outline: none;
+  border-color: #e53935;
+  box-shadow: 0 2px 6px rgba(229,57,53,0.3);
+}
+
+
+/* チェックボックスグループ全体の余白 */
+.checkbox-group { 
+    justify-content: center; /* 中央揃え */
+  margin-bottom: 7px;  /* 必要に応じて調整 */
+}
+
+/* グループ見出し（カテゴリ名など） */
+.checkbox-group strong { 
+  display: block; 
+  margin-bottom: 1px; 
+  font-size: 24px;      /* ← 見出しを少し大きく */
+  font-weight: bold;
+   text-align: center; /* ← これを追加 */
+}
+
+/* ラベル（チェックボックス横の文字） */
+.checkbox-group label {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 18px;  /* ← チェックボックス同士の間隔 */
+  margin-bottom: 10px;  /* 縦方向の余白 ← ここを追加/調整 */
+  padding-left: 8px;  /* ← 左側の余白（不要なら0でも可） */
+  cursor: pointer;
+  line-height: 1.1;
+  font-size: 28px;      /* ← ラベル文字を大きめに */
+}
+
+/* チェックボックス本体 */
+.checkbox-group input[type="checkbox"] {
+  transform: scale(1.7); /* ← チェックボックスを拡大 */
+  margin-right: 6px;     /* ← 文字との間隔 */
+}
+
+.checkbox-group input:checked + span {
+  background: linear-gradient(45deg, #f88379, #e53935);
+  color: white;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: 0.2s;
+}
+  .checkbox-group input[type="checkbox"] {
+  accent-color: #e53935; /* チェック時の色を赤系で統一 */
+  transform: scale(1.4);
+  margin-right: 6px;
+  cursor: pointer;
+}
+
+
+
+
+.buttons-wrapper { 
+  display: flex; 
+  gap: 10px;          /* ボタン同士の隙間 */
+  width: 100%; 
+  margin-top: 12px; 
+}
+
+.buttons-wrapper button {
+  flex: 1;            /* ← 均等に横幅を取る */
+  padding: 20px 0;    /* ← 高さ調整（お好みで18pxくらいでもOK） */
+  font-size: 18px;    /* ← 文字サイズ */
+  font-weight: bold; 
+  text-align: center;
+  background: linear-gradient(135deg, #f88379, #e53935);
+  color: white;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.buttons-wrapper button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+
+
+/* ================================
+   カードグリッド
+   ================================ */
+.card-grid { 
+  display: grid; 
+  gap: 6px; /* ← 枚数優先なら 4px、見やすさ優先なら 6〜8px */
+}
+
+/* スマホ表示（767px以下） */
+@media (max-width: 767px) { 
+  .card-grid:not(.no-image) { 
+    grid-template-columns: repeat(5, 1fr); 
+  } 
+}
+
+/* PC表示（768px以上） */
+@media (min-width: 768px) { 
+  .card-grid { 
+    grid-template-columns: repeat(5, 1fr); 
+  } 
+}
+
+/* ================================
+   カード1枚（調整版）
+   ================================ */
+.card {
+  border: 2px solid var(--color-gray-border);
+  border-radius: var(--card-border-radius);
+  padding: 2px; /* ← 内側余白をさらに圧縮 */
+  text-align: center;
+  background-color: var(--color-gray-light);
+  font-size: var(--font-size-xsmall);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 220px; /* ← 画像を大きくした分 少し高さを確保 */
+}
+
+/* カード画像 */
+.card img {
+  width: 100%;
+  height: auto;
+  max-height: 180px; /* ← 160px → 180px に拡大 */
+  object-fit: contain;
+  margin-bottom: 2px; /* ← 余白をさらに削る */
+}
+
+/* カード名 */
+.card-name {
+  font-weight: bold;
+  margin: 1px 0;   /* ← 余白を最小限に */
+  font-size: 12px; /* ← 12px → 14px に拡大 */
+  white-space: normal;
+  cursor: pointer;
+}
+
+/* カード内テキスト全体 */
+.card-texts {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-grow: 1;
+}
+
+/* 募集枚数 */
+.card-quantity {
+  font-size: 15px;   /* ← 14px → 15px */
+  font-weight: bold;
+  color: #a66b6f;
+  margin: 1px 0;
+}
+
+/* 注意書き */
+.card-note {
+  font-size: 10px;   /* ← 9px → 10px */
+  color: #555;
+  margin-top: 1px;   /* ← 間隔を詰める */
+  line-height: 1.2;
+}
+
+/* 価格 */
+.card-price {
+  font-weight: bold;
+  font-size: 20px;  /* ← 18px → 20px に強調 */
+  color: #e53935;   /* ← 価格は目立たせる */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: auto;
+}
+
+
+/* 価格色指定 */
+.price-store { color: #e53935 !important; font-weight: bold; }
+.price-mail  { color: #43a047 !important; font-weight: bold; }
+
+/* グレイアウト（募集0枚など） */
+.gray-out { opacity: 0.9; filter: grayscale(100%); pointer-events: none; }
+
+/* ================================
+   「もっと見る」ボタン（豪華・大きめ）
+   ================================ */
+#loadMoreButton {
+  display: block;
+  width: 100%;
+  font-size: 42px;          /* 文字を大きめ */
+  font-weight: bold;
+  padding: 70px 0;          /* 縦方向を広くして押しやすく */
+  margin: 30px 0;
+  text-align: center;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f88379, #e53935); /* 豪華な赤系グラデーション */
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+  #loadMoreButton:hover {
+  background: linear-gradient(135deg, #e53935, #b71c1c);
+  transform: translateY(-2px);
+}
+
+/* 画像読み込み時のぼかし */
+img.lazy { filter: blur(2px); transition: filter 0.3s; }
+img.lazy.loaded { filter: none; }
+
+/* ================================
+   画像OFF時のカード（小さめ表示）
+   ================================ */
+
+/* カードグリッド全体 */
+.card-grid.no-image { 
+  display: flex;               /* 縦方向に並べる */
+  flex-direction: column;     
+  gap: 4px;                    /* カード間の隙間を少し小さく */
+  overflow-x: hidden;          /* 横スクロール防止 */
+  padding: 2px;                /* 内側余白を少し縮小 */
+}
+
+/* 各カード */
+.card.no-image { 
+  display: flex;              
+  flex-wrap: wrap;             /* 要素を折り返し可能 */
+  align-items: center;         /* 垂直中央揃え */
+  justify-content: space-between; /* 左右に均等配置 */
+  min-height: auto;           
+  padding: 4px 6px;            /* 内側余白を少し縮小 */
+  gap: 6px;                    /* 要素間の隙間 */
+  border-radius: 4px;          /* 角丸も少し小さめ */
+  font-size: 0.9em;            /* 全体を少し縮小 */
+  background-color: #f9f9f9;  
+}
+
+/* 画像は非表示 */
+.card.no-image img { display: none; }
+
+/* カード名 */
+.card.no-image .card-name { 
+  font-size: 24px;   /* 小さめ表示 */
+  font-weight: bold; 
+  flex: 1 1 auto;    
+  min-width: 0;      
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* 募集枚数 */
+.card.no-image .card-quantity { 
+  font-size: 36px;   /* 少し小さめ */
+  font-weight: bold; 
+  flex: 0 0 auto;    
+  margin: 0;
+  white-space: nowrap;
+  color: #a66b6f;
+}
+
+/* 価格表示 */
+.card.no-image .card-price { 
+  font-size: 36px;   /* 見やすく少し大きめ */
+  flex: 1 1 auto;    
+  min-width: 0;      
+  white-space: nowrap;        
+  overflow: hidden;           
+  text-overflow: ellipsis;    
+  margin: 0;
+}
+
+/* 価格色付け */
+.card-price .price-store-inline { 
+  color: #e53935; 
+  font-weight: bold; 
+}
+.card-price .price-mail-inline { 
+  color: #43a047; 
+  font-weight: bold; 
+}
+
+/* ================================
+   画像OFF時の調整完了 下記スマホ時の設定完了
+   ================================ */
+
+@media (max-width: 767px) {
+  /* ✅ カード間の隙間を詰める（一覧性UP） */
+  .card-grid {
+    gap: 4px; /* → 小さめ。数字を小さくするほど密度UP */
+  }
+
+  /* ✅ カードの内側余白も最小限に */
+  .card {
+    padding: 2px;      /* → 4px からさらに削減 */
+    min-height: 180px; /* → 高さも圧縮（多く見せる） */
+  }
+
+  /* ✅ 文字サイズを全体的に抑える */
+  .card-name {
+    font-size: 7px;
+  }
+  .card-quantity {
+    font-size: 9px;
+  }
+  .card-price {
+    font-size: 10px;
+  }
+  .card-note {
+    font-size: 7px;
+    line-height: 1.1; /* 行間も詰める */
+  }
+
+  /* ✅ ボタン類は最小限のサイズに */
+  .buttons-wrapper button {
+    font-size: 10px;  /* → 小さく */
+    padding: 4px 3px; /* → タップ領域を削減 */
+  }
+
+  /* ✅ チェックボックスラベルも詰める */
+  .checkbox-group label {
+    line-height: 1.1;
+    margin-right: 4px;
+    font-size: 10px;
+  }
+  .checkbox-group input {
+    transform: scale(0.9); /* → 小さめに */
+    margin-right: 2px;
+  }
+
+  .checkbox-group {
+    margin-bottom: 1px; /* スマホではさらにコンパクトに */
+  }
+
+  .checkbox-group strong {
+    margin-bottom: 1px;
+  }
+}
+
+
+  /* ✅ 画像も少し小さめ（縦を削る） */
+  .card img {
+    max-height: 90px; /* → デフォルト120pxから縮小 */
+  }
+
+  /* ここから追加：画像OFF時の文字サイズ調整 */
+  .card.no-image .card-name { font-size: 26px; }
+  .card.no-image .card-quantity { font-size: 18px; }
+  .card.no-image .card-price { font-size: 26px; }
+}
+
+
+</style>
+</head>
+<body>
+
+<h1>【ポケモンカード買取表(郵送も共通)】</h1>
+
+<div class="notice-header">
+  <p class="notice-important">
+    地方の方も、郵送価格＝対面価格でお査定します‼️
+  </p>
+  <p class="notice-sellpoint">
+    全国最高値カード多数＆ラインナップ随時強化中‼️査定後の交渉もOK🙆‍♀️
+  </p>
+  <p class="notice-quick">
+    東京近郊の方は秋葉原で対面買取も対応!!（11時～22時）<br>
+    郵送の場合、到着日の相場で査定、最短当日査定&当日振込‼️
+  </p>
+  <p class="notice-dm">
+    買取希望カードを写真または文字でDMに送信‼️<br>
+    （申込枚数25枚以上 or 合計30万円以上が受付対象）
+  </p>
+</div>
+
+<div class="controls">
+
+  <div class="checkbox-group">
+    <strong>【ポケモン種族】</strong>
+    <label><input type="checkbox" value="ピカチュウ"><span>ピカチュウ系統</span></label>
+    <label><input type="checkbox" value="リザードン"><span>リザードン系統</span></label>
+    <label><input type="checkbox" value="ブイズ"><span>ブイズ系統</span></label>
+    <label><input type="checkbox" value="ミュウ"><span>ミュウ系統</span></label>
+    <label><input type="checkbox" value="ゲンガー"><span>ゲンガー系統</span></label>
+    <label><input type="checkbox" value="レックウザ"><span>レックウザ系統</span></label>
+  </div>
+  <div class="checkbox-group">
+    <strong>【キャラクター・サポート】</strong>
+    <label><input type="checkbox" value="サポート"><span>サポート系統</span></label>
+    <label><input type="checkbox" value="リーリエ"><span>リーリエ系統</span></label>
+    <label><input type="checkbox" value="アセロラ"><span>アセロラ系統</span></label>
+    <label><input type="checkbox" value="マリィ"><span>マリィ系統</span></label>
+    <label><input type="checkbox" value="ナンジャモ"><span>ナンジャモ系統</span></label>
+  </div>
+  <div class="checkbox-group">
+    <strong>【レアリティ・特殊レアリティなど】</strong>
+    <label><input type="checkbox" value="メガ"><span>メガ系統</span></label>
+    <label><input type="checkbox" value="ex"><span>ex・EX系統</span></label>
+    <label><input type="checkbox" value="AR"><span>AR・CHR系統</span></label>
+    <label><input type="checkbox" value="V"><span>V・VMAX・VSTAR系統</span></label>
+    <label><input type="checkbox" value="GX"><span>GX系統</span></label>
+    <label><input type="checkbox" value="nagaba"><span>nagaba系統</span></label>
+    <label><input type="checkbox" value="マスボ"><span>マスターボール系統</span></label>
+    <label><input type="checkbox" value="海外"><span>海外系統</span></label>
+    <label><input type="checkbox" value="th"><span>周年系統</span></label>
+    <label><input type="checkbox" value="マック"><span>マックプロモ系統</span></label>
+  </div>
+
+  <div class="search-wrapper">
+    <input type="text" id="searchInput" placeholder="カード名や型番で検索（ひらがな検索対応）" aria-label="カード検索" />
+  </div>
+
+
+  <div class="buttons-wrapper">
+    <button id="resetButton">検索条件を<br>リセット</button>
+    <button class="sort-btn" data-sort="price">価格<br>（高い順）</button>
+    <button class="sort-btn" data-sort="priceLow">価格<br>（安い順）</button>
+    <button id="toggleImageButton">画像ON/OFF</button>
+  </div>
+</div>
+
+<div class="card-grid" id="cardList"></div>
+<button id="loadMoreButton">こちらをタップして、さらにカードを読み込む</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+<script>
+    // カード情報CSVのURL（GoogleスプレッドシートのCSVエクスポートリンク　シートごとに張り付け）
+const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT753ZwAyAqWj5WIi51Gd9Qnv45s-TmB0v9sMvVBe3Tj6QjYOVasVC8K8HtgYtSxEOXD7KV_iUCA9ac/pub?gid=839074683&single=true&output=csv';
+
+let cards = [];
+let filteredCards = [];
+let currentPage = 0;
+const cardsPerPage = 100;
+let showImages = true;
+
+// カタカナ → ひらがな
+function kataToHira(str){
+  return str.replace(/[\u30a1-\u30f6]/g, match => String.fromCharCode(match.charCodeAt(0)-0x60));
+}
+
+// 英数字全角 → 半角、小文字化、ひらがな統一、漢字は残す
+function normalizeLatin(str){
+  return str
+    .toLowerCase()
+    // 全角英数字 → 半角
+    .replace(/[Ａ-Ｚａ-ｚ０-９]/g, s => String.fromCharCode(s.charCodeAt(0) - 0xFEE0))
+    // 全角スペース → 半角
+    .replace(/\u3000/g, ' ')
+    // ひらがな⇔カタカナ統一（カタカナはひらがなに変換済み）
+    .replace(/[\u30a1-\u30f6]/g, s => String.fromCharCode(s.charCodeAt(0) - 0x60))
+    // 記号類は削除（漢字・ひらがな・英数字は残す）
+    .replace(/[^a-z0-9ぁ-ん一-龯]/g,'');
+}
+
+// 入力文字列をスペース・カンマ・スラッシュで分割して正規化
+function splitKeywords(str){
+  return str.split(/[\s,・／]+/)
+            .map(s => normalizeLatin(kataToHira(s)))
+            .filter(Boolean);
+}
+
+// チェックボックスで選択された値を取得
+function getCheckedValues(){
+  const checked = document.querySelectorAll('.checkbox-group input:checked');
+  return Array.from(checked).map(cb => cb.value);
+}
+
+function applyFilterSort(sortValueFromBtn){
+  const keyword = document.getElementById('searchInput').value.trim();
+  const keywords = splitKeywords(keyword);
+  const checkedValues = getCheckedValues();
+  let sortValue = sortValueFromBtn || document.querySelector('.sort-btn.active')?.dataset.sort || 'price';
+
+  filteredCards = cards.filter(card => {
+    // 🔹カード名で検索判定
+    const target = normalizeLatin(kataToHira(card["カード名 型番 レアリティ"]||""));
+    const keywordMatch = keywords.every(k => target.includes(k));
+
+// 🔹分類でチェックボックス判定（分類1 または 分類2 に含まれるかで判定）
+const classification1 = normalizeLatin(kataToHira(card["分類1"] || ""));
+const classification2 = normalizeLatin(kataToHira(card["分類2"] || ""));
+const checkboxMatch =
+  checkedValues.length===0 ||
+  checkedValues.some(val => classification1.includes(normalizeLatin(kataToHira(val))) ||
+                            classification2.includes(normalizeLatin(kataToHira(val))));
+
+    return keywordMatch && checkboxMatch;
+  });
+
+  if(sortValue==='price'){
+    filteredCards.sort((a,b)=> 
+      (Number((b["店頭価格"]||'0').replace(/[¥,\s]/g,''))||0) -
+      (Number((a["店頭価格"]||'0').replace(/[¥,\s]/g,''))||0)
+    );
+  } else if(sortValue==='priceLow'){
+    filteredCards.sort((a,b)=> 
+      (Number((a["店頭価格"]||'0').replace(/[¥,\s]/g,''))||0) -
+      (Number((b["店頭価格"]||'0').replace(/[¥,\s]/g,''))||0)
+    );
+  }
+
+  currentPage=0;
+  displayNextPage();
+}
+
+
+async function fetchCsvData(){
+  document.getElementById('cardList').textContent='読み込み中.....';
+  try{
+    const res = await fetch(csvUrl);
+    const text = await res.text();
+    const parsed = Papa.parse(text,{header:true, skipEmptyLines:true});
+cards = parsed.data.map(card=>({
+  "カード名 型番 レアリティ": card["カード名 型番 レアリティ"],
+  "分類1": card["分類1"],   // ← 新しく追加
+  "分類2": card["分類2"],   // ← 新しく追加
+  "募集枚数": card["募集枚数"],
+  "店頭価格": card["店頭価格"],
+  "最低価格": card["最低価格"],
+  "画像URL": card["画像URL"],
+  "グレイアウト発動時専用": card["グレイアウト発動時専用"]
+}));
+
+    applyFilterSort();
+  } catch(e){ console.error(e); document.getElementById('cardList').textContent='データの読み込みに失敗しました。'; }
+}
+
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const img=entry.target;
+      if(img.dataset.src) { img.src=img.dataset.src; img.classList.add('loaded'); img.removeAttribute('data-src'); }
+      observer.unobserve(img);
+    }
+  });
+});
+
+function displayNextPage(){
+  const start = currentPage * cardsPerPage;
+  const end = start + cardsPerPage;
+  const cardsToShow = filteredCards.slice(start, end);
+
+  if(currentPage === 0) document.getElementById('cardList').innerHTML = '';
+
+  const cardGrid = document.getElementById('cardList');
+  const fragment = document.createDocumentFragment(); // ← ここでフラグメント作成
+
+  cardsToShow.forEach(card => {
+    const isZero = (card["募集枚数"]||"").trim() === "0枚募集中";
+    const grayClass = isZero ? 'gray-out' : '';
+    const normalPrice = Number((card["店頭価格"]||'0').replace(/[¥,\s]/g,'')) || 0;
+    const foilPrice = Number((card["最低価格"]||'0').replace(/[¥,\s]/g,'')) || 0;
+    
+    const priceDisplay = showImages
+      ? isZero ? (card["グレイアウト発動時専用"]||'DMで確認') 
+               : `<span class="price-store">共通買取価格</span><br><span class="price-store">¥${normalPrice.toLocaleString()}</span><br><span class="price-mail">最低買取価格</span><br><span class="price-mail">¥${foilPrice.toLocaleString()}</span>`
+      : isZero ? (card["グレイアウト発動時専用"]||'DMで確認') 
+               : `<span class="price-store-inline">共通買取価格 ¥${normalPrice.toLocaleString()}</span> / <span class="price-mail-inline">最低買取価格 ¥${foilPrice.toLocaleString()}</span>`;
+
+    const div = document.createElement('div');
+    div.className = `card ${grayClass} ${!showImages ? 'no-image' : ''}`;
+    div.innerHTML = `
+      <img data-src="${card.画像URL}" loading="lazy" alt="${card["カード名 型番 レアリティ"]}" class="lazy"/>
+      <div class="card-name">${card["カード名 型番 レアリティ"]}</div>
+      <div class="card-texts">
+        <div class="card-price">${priceDisplay}</div>
+        <div class="card-quantity">本日${isZero ? '<br>満額は終了' : (card["募集枚数"]||'-')}</div>
+      </div>
+    `;
+
+    fragment.appendChild(div);
+
+    // IntersectionObserver の登録もここでまとめて実行
+    const img = div.querySelector('img.lazy');
+    if(img) observer.observe(img);
+  });
+
+  cardGrid.appendChild(fragment); // ← DOM はまとめて追加
+
+  if(showImages){
+    cardGrid.classList.remove('no-image');
+  } else {
+    cardGrid.classList.add('no-image');
+  }
+
+  currentPage++;
+  document.getElementById('loadMoreButton').style.display = (end >= filteredCards.length) ? 'none' : 'block';
+}
+
+
+// イベント 
+document.getElementById('loadMoreButton').addEventListener('click', displayNextPage);
+
+document.getElementById('resetButton').addEventListener('click', () => {
+  document.getElementById('searchInput').value = '';
+  document.querySelectorAll('.checkbox-group input').forEach(cb => cb.checked = false);
+  document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector('.sort-btn[data-sort="price"]').classList.add('active');
+  applyFilterSort('price');
+});
+
+document.getElementById('searchInput').addEventListener('input', () => {
+  // 検索ワード入力時 → チェックボックスをすべてオフ
+  document.querySelectorAll('.checkbox-group input').forEach(cb => cb.checked = false);
+  applyFilterSort();
+});
+
+// チェックボックス操作時 → 検索ワードをクリア
+document.querySelectorAll('.checkbox-group input').forEach(cb =>
+  cb.addEventListener('change', () => {
+    if (cb.checked) {
+      // 自分以外のチェックを外す
+      document.querySelectorAll('.checkbox-group input').forEach(other => {
+        if (other !== cb) other.checked = false;
+      });
+    }
+    // （cb.checked が false の場合は何もしない → 全部未選択もOK）
+    document.getElementById('searchInput').value = '';
+    applyFilterSort();
+  })
+);
+
+
+document.querySelectorAll('.sort-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilterSort(btn.dataset.sort);
+  });
+});
+
+// 画像ON/OFF
+document.getElementById('toggleImageButton').addEventListener('click',()=>{
+  showImages = !showImages;
+  currentPage=0;
+  displayNextPage();
+});
+
+fetchCsvData();
+</script>
+</body>
+</html>
