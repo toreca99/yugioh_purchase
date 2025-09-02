@@ -233,11 +233,14 @@ h1 {
 /* カード名 */
 .card-name {
   font-weight: bold;
-  margin: 1px 0;   /* ← 余白を最小限に */
-  font-size: 12px; /* ← 12px → 14px に拡大 */
-  white-space: normal;
+  margin: 1px 0;
+  font-size: 12px;
+  white-space: normal;   /* ← 折り返しを許可 */
+  word-break: break-word; /* ← 長い単語でも途中で改行 */
+  overflow-wrap: anywhere; /* ← さらに強制的に折り返す */
   cursor: pointer;
 }
+
 
 /* カード内テキスト全体 */
 .card-texts {
