@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -12,7 +11,7 @@
   --color-primary: #f88379;       /* メインカラー（ボタンなど） */
   --color-gray-light: #f9f9f9;    /* カード背景 */
   --color-gray-border: #ccc;      /* カード境界線 */
-  --font-size-base: 16px; /* 基本文字サイズを小さめに */
+  --font-size-base: 14px; /* 基本文字サイズを小さめに */
   --font-size-small: 11px;
   --font-size-xsmall: 9px;
   --card-border-radius: 4px;      /* カード角丸 */
@@ -30,7 +29,7 @@ body {
   background: #fff;
 }
 h1 {
-  font-size: 36px;                 /* 大きめの文字サイズ */
+  font-size: 19px;                 /* 大きめの文字サイズ */
   font-weight: 900;                /* 太字で豪華さを強調 */
   text-align: center;              /* 中央揃え */
   background: linear-gradient(90deg, #f88379, #e53935, #ff6f61); /* 左から右へグラデーション */
@@ -41,17 +40,32 @@ h1 {
   letter-spacing: 1px;  /* 少し文字間を広げる */
 }
 
+/* PC表示用（768px以上） */
+@media (min-width: 768px) {
+  h1 {
+    font-size: 40px; /* PCでは大きく表示 */
+  }
+}
 
 .notice-header {
- text-align: center;
-  font-size: 18px;      /* ヘッダー下でも読みやすい大きさ */
-  line-height: 1.5;     /* 行間少し広めで視認性アップ */
+  text-align: center;
+  font-size: 10px;      /* ヘッダー下でも読みやすい大きさ */
+  line-height: 1.5;    /* 行間少し広めで視認性アップ */
   color: #333;
   margin: 8px 0 20px 0;
 }
 
+/* PC表示用（768px以上） */
+@media (min-width: 768px) {
+  .notice-header {
+    font-size: 18px; /* PCでは大きく表示 */
+  }
+}
+
+
+
 .notice-header p {
-  margin: 4px 0;
+  margin: 1px 0;
 }
 
 .notice-important {
@@ -80,7 +94,7 @@ h1 {
 .controls { 
   display: flex; 
   flex-direction: column; 
-  gap: 12px; 
+  gap: 8px; 
   margin-bottom: 10px; 
 }
 .search-wrapper { 
@@ -90,12 +104,12 @@ h1 {
 }
 #searchInput { 
   flex: 1; 
-  padding: 10px 14px;      /* ← 縦横の余白を小さめに */
+  padding: 4px 6px;      /* ← 内側縦横の余白を小さめに */
   font-size: 36px;       /* ← 正常な文字サイズに修正 */
   border: 1px solid var(--color-gray-border); 
   border-radius: 6px; 
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  height: 54px;          /* ← 縦の高さを少し抑える */
+  height: 50px;          /* ← 縦の高さを少し抑える */
 }
   #searchInput:focus {
   outline: none;
@@ -107,14 +121,14 @@ h1 {
 /* チェックボックスグループ全体の余白 */
 .checkbox-group { 
     justify-content: center; /* 中央揃え */
-  margin-bottom: 7px;  /* 必要に応じて調整 */
+  margin-bottom: 3px;  /* 必要に応じて調整 */
 }
 
 /* グループ見出し（カテゴリ名など） */
 .checkbox-group strong { 
   display: block; 
   margin-bottom: 1px; 
-  font-size: 24px;      /* ← 見出しを少し大きく */
+  font-size: 14px;      /* ← 見出しを少し大きく */
   font-weight: bold;
    text-align: center; /* ← これを追加 */
 }
@@ -123,17 +137,17 @@ h1 {
 .checkbox-group label {
   display: inline-flex;
   align-items: center;
-  margin-right: 18px;  /* ← チェックボックス同士の間隔 */
+  margin-right: 14px;  /* ← チェックボックス同士の間隔 */
   margin-bottom: 10px;  /* 縦方向の余白 ← ここを追加/調整 */
-  padding-left: 8px;  /* ← 左側の余白（不要なら0でも可） */
+  padding-left: 6px;  /* ← 左側の余白（不要なら0でも可） */
   cursor: pointer;
   line-height: 1.1;
-  font-size: 28px;      /* ← ラベル文字を大きめに */
+  font-size: 24px;      /* ← ラベル文字を大きめに */
 }
 
 /* チェックボックス本体 */
 .checkbox-group input[type="checkbox"] {
-  transform: scale(1.7); /* ← チェックボックスを拡大 */
+  transform: scale(1.4); /* ← チェックボックスを拡大 */
   margin-right: 6px;     /* ← 文字との間隔 */
 }
 
@@ -148,23 +162,21 @@ h1 {
   .checkbox-group input[type="checkbox"] {
   accent-color: #e53935; /* チェック時の色を赤系で統一 */
   transform: scale(1.4);
-  margin-right: 6px;
+  margin-right: 4px;
   cursor: pointer;
 }
 
 
-
-
 .buttons-wrapper { 
   display: flex; 
-  gap: 10px;          /* ボタン同士の隙間 */
+  gap: 3px;          /* ボタン同士の隙間 */
   width: 100%; 
-  margin-top: 12px; 
+  margin-top: 10px; 
 }
 
 .buttons-wrapper button {
   flex: 1;            /* ← 均等に横幅を取る */
-  padding: 20px 0;    /* ← 高さ調整（お好みで18pxくらいでもOK） */
+  padding: 16px 0;    /* ← 高さ調整（お好みで18pxくらいでもOK） */
   font-size: 18px;    /* ← 文字サイズ */
   font-weight: bold; 
   text-align: center;
@@ -188,21 +200,25 @@ h1 {
    ================================ */
 .card-grid { 
   display: grid; 
-  gap: 6px; /* ← 枚数優先なら 4px、見やすさ優先なら 6〜8px */
+  gap: 4px; /* ← 枚数優先なら 4px、見やすさ優先なら 6〜8px */
 }
 
 /* スマホ表示（767px以下） */
 @media (max-width: 767px) { 
   .card-grid:not(.no-image) { 
-    grid-template-columns: repeat(5, 1fr); 
+    grid-template-columns: repeat(6, 1fr); 
   } 
 }
 
 /* PC表示（768px以上） */
 @media (min-width: 768px) { 
   .card-grid { 
-    grid-template-columns: repeat(5, 1fr); 
-  } 
+    grid-template-columns: repeat(6, 1fr); 
+  }
+  /* PC用 .card.no-image の文字サイズ */
+  .card.no-image .card-name { font-size: 50px; }
+  .card.no-image .card-quantity { font-size: 40px; }
+  .card.no-image .card-price { font-size: 50px; } 
 }
 
 /* ================================
@@ -218,7 +234,7 @@ h1 {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 220px; /* ← 画像を大きくした分 少し高さを確保 */
+  min-height: 260px; /* ← 画像を大きくした分 少し高さを確保 */
 }
 
 /* カード画像 */
@@ -234,7 +250,7 @@ h1 {
 .card-name {
   font-weight: bold;
   margin: 1px 0;
-  font-size: 12px;
+  font-size: 8px;
   white-space: normal;   /* ← 折り返しを許可 */
   word-break: break-word; /* ← 長い単語でも途中で改行 */
   overflow-wrap: anywhere; /* ← さらに強制的に折り返す */
@@ -252,10 +268,10 @@ h1 {
 
 /* 募集枚数 */
 .card-quantity {
-  font-size: 15px;   /* ← 14px → 15px */
+  font-size: 18px;   /* ← 14px → 15px */
   font-weight: bold;
   color: #a66b6f;
-  margin: 1px 0;
+  margin: 2px 0;
 }
 
 /* 注意書き */
@@ -269,7 +285,7 @@ h1 {
 /* 価格 */
 .card-price {
   font-weight: bold;
-  font-size: 20px;  /* ← 18px → 20px に強調 */
+  font-size: 22px;  /* ← 18px → 20px に強調 */
   color: #e53935;   /* ← 価格は目立たせる */
   white-space: nowrap;
   overflow: hidden;
@@ -291,10 +307,10 @@ h1 {
 #loadMoreButton {
   display: block;
   width: 100%;
-  font-size: 42px;          /* 文字を大きめ */
+  font-size: 16px;          /* 文字を大きめ */
   font-weight: bold;
-  padding: 70px 0;          /* 縦方向を広くして押しやすく */
-  margin: 30px 0;
+  padding: 20px 0;          /* 縦方向を広くして押しやすく */
+  margin: 10px 0;
   text-align: center;
   border-radius: 12px;
   background: linear-gradient(135deg, #f88379, #e53935); /* 豪華な赤系グラデーション */
@@ -322,7 +338,7 @@ img.lazy.loaded { filter: none; }
 .card-grid.no-image { 
   display: flex;               /* 縦方向に並べる */
   flex-direction: column;     
-  gap: 4px;                    /* カード間の隙間を少し小さく */
+  gap: 2px;                    /* カード間の隙間を少し小さく */
   overflow-x: hidden;          /* 横スクロール防止 */
   padding: 2px;                /* 内側余白を少し縮小 */
 }
@@ -334,8 +350,8 @@ img.lazy.loaded { filter: none; }
   align-items: center;         /* 垂直中央揃え */
   justify-content: space-between; /* 左右に均等配置 */
   min-height: auto;           
-  padding: 4px 6px;            /* 内側余白を少し縮小 */
-  gap: 6px;                    /* 要素間の隙間 */
+  padding: 2px 4px;            /* 内側余白を少し縮小 */
+  gap: 4px;                    /* 要素間の隙間 */
   border-radius: 4px;          /* 角丸も少し小さめ */
   font-size: 0.9em;            /* 全体を少し縮小 */
   background-color: #f9f9f9;  
@@ -346,7 +362,7 @@ img.lazy.loaded { filter: none; }
 
 /* カード名 */
 .card.no-image .card-name { 
-  font-size: 24px;   /* 小さめ表示 */
+  font-size: 16px;   /* 小さめ表示 */
   font-weight: bold; 
   flex: 1 1 auto;    
   min-width: 0;      
@@ -356,7 +372,7 @@ img.lazy.loaded { filter: none; }
 
 /* 募集枚数 */
 .card.no-image .card-quantity { 
-  font-size: 36px;   /* 少し小さめ */
+  font-size: 20px;   /* 少し小さめ */
   font-weight: bold; 
   flex: 0 0 auto;    
   margin: 0;
@@ -366,7 +382,7 @@ img.lazy.loaded { filter: none; }
 
 /* 価格表示 */
 .card.no-image .card-price { 
-  font-size: 36px;   /* 見やすく少し大きめ */
+  font-size: 22px;   /* 見やすく少し大きめ */
   flex: 1 1 auto;    
   min-width: 0;      
   white-space: nowrap;        
@@ -390,69 +406,36 @@ img.lazy.loaded { filter: none; }
    ================================ */
 
 @media (max-width: 767px) {
-  /* ✅ カード間の隙間を詰める（一覧性UP） */
-  .card-grid {
-    gap: 4px; /* → 小さめ。数字を小さくするほど密度UP */
-  }
+  /* カードグリッド間隔 */
+  .card-grid { gap: 2px; }
 
-  /* ✅ カードの内側余白も最小限に */
-  .card {
-    padding: 2px;      /* → 4px からさらに削減 */
-    min-height: 180px; /* → 高さも圧縮（多く見せる） */
-  }
+  /* カード全体 */
+  .card { padding: 2px; min-height: 180px; }
 
-  /* ✅ 文字サイズを全体的に抑える */
-  .card-name {
-    font-size: 7px;
-  }
-  .card-quantity {
-    font-size: 9px;
-  }
-  .card-price {
-    font-size: 10px;
-  }
-  .card-note {
-    font-size: 7px;
-    line-height: 1.1; /* 行間も詰める */
-  }
+  /* カード内文字サイズ */
+  .card-name { font-size: 6px; }
+  .card-quantity { font-size: 8px; }
+  .card-price { font-size: 9px; }
+  .card-note { font-size: 5px; line-height: 1.1; }
 
-  /* ✅ ボタン類は最小限のサイズに */
-  .buttons-wrapper button {
-    font-size: 10px;  /* → 小さく */
-    padding: 4px 3px; /* → タップ領域を削減 */
-  }
+  /* 画像OFF時 */
+  .card.no-image .card-name { font-size: 10px; }
+  .card.no-image .card-quantity { font-size: 10px; }
+  .card.no-image .card-price { font-size: 10px; }
 
-  /* ✅ チェックボックスラベルも詰める */
-  .checkbox-group label {
-    line-height: 1.1;
-    margin-right: 4px;
-    font-size: 10px;
-  }
-  .checkbox-group input {
-    transform: scale(0.9); /* → 小さめに */
-    margin-right: 2px;
-  }
+  /* ボタン */
+  .buttons-wrapper button { font-size: 10px; padding: 5px 4px; }
 
-  .checkbox-group {
-    margin-bottom: 1px; /* スマホではさらにコンパクトに */
-  }
+  /* チェックボックス */
+  .checkbox-group label { line-height: 1.1; margin-right: 4px; font-size: 10px; }
+  .checkbox-group input { transform: scale(0.9); margin-right: 2px; }
+  .checkbox-group { margin-bottom: 1px; }
+  .checkbox-group strong { margin-bottom: 1px; }
 
-  .checkbox-group strong {
-    margin-bottom: 1px;
-  }
+  /* 画像縮小 */
+  .card img { max-height: 90px; }
 }
 
-
-  /* ✅ 画像も少し小さめ（縦を削る） */
-  .card img {
-    max-height: 90px; /* → デフォルト120pxから縮小 */
-  }
-
-  /* ここから追加：画像OFF時の文字サイズ調整 */
-  .card.no-image .card-name { font-size: 26px; }
-  .card.no-image .card-quantity { font-size: 18px; }
-  .card.no-image .card-price { font-size: 26px; }
-}
 
 
 </style>
@@ -498,11 +481,6 @@ img.lazy.loaded { filter: none; }
     <label><input type="checkbox" value="ウルトラ"><span>ウルトラ系統</span></label>
     <label><input type="checkbox" value="ラッシュ"><span>ラッシュデュエル系統</span></label>
   </div>
-  <div class="checkbox-group">
-    <strong>【考え中】</strong>
-    <label><input type="checkbox" value="考え中"><span>考え中系統</span></label>
-  
-  </div>
 
   <div class="search-wrapper">
     <input type="text" id="searchInput" placeholder="カード名や型番で検索（ひらがな検索対応）" aria-label="カード検索" />
@@ -528,7 +506,7 @@ const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT753ZwAyAqWj5WI
 let cards = [];
 let filteredCards = [];
 let currentPage = 0;
-const cardsPerPage = 100;
+const cardsPerPage = 104;
 let showImages = true;
 
 // カタカナ → ひらがな
